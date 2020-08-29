@@ -1,0 +1,19 @@
+{
+  "name": "beepboop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebas1245/BeepBoop.git"
+  },
+  "author": "Sebastián Saldaña, David García, Alfredo Welsh, Ángel Guevara",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sebas1245/BeepBoop/issues"
+  },
+  "homepage": "https://github.com/Sebas1245/BeepBoop#readme"
+}
