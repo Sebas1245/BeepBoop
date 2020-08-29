@@ -66,7 +66,7 @@ function detectBrand(imageUrl) {
       for (const brand of brands) {
         console.log(`    ${brand.name} (${brand.confidence.toFixed(2)} confidence)`);
       }
-    } 
+    }
     else { 
         console.log(`No brands found.`); 
     }
