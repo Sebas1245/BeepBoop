@@ -27,13 +27,11 @@ if (!key) { throw new Error('Set your environment variables for your subscriptio
 // Instantiate client with endpoint and key
 const computerVisionClient = new ComputerVisionClient(
     new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } }), endpoint);
-console.log(computerVisionClient);
 
 function computerVision(imageUrl) {
     async.series([
-        async function (cb) {
-            detectBrand(imageUrl);
-            cb(err,result);
+        async function () {
+            await detectBrand(imageUrl);
         },
         function () {
             return new Promise((resolve) => {
@@ -54,7 +52,7 @@ app.post("/detect_brand", (req,res) => {
     computerVision(imageUrl);
 })
 
-function detectBrand(imageUrl) {
+async function detectBrand(imageUrl) {
     const brandURLImage = imageUrl;
     // Analyze URL image
     console.log('Analyzing brands in image...', brandURLImage.split('/').pop());
@@ -64,7 +62,7 @@ function detectBrand(imageUrl) {
     if (brands.length) {
       console.log(`${brands.length} brand${brands.length != 1 ? 's' : ''} found:`);
       for (const brand of brands) {
-        console.log(`    ${brand.name} (${brand.confidence.toFixed(2)} confidence)`);
+        console.log(`${brand.name} (${brand.confidence.toFixed(2)} confidence)`);
       }
     }
     else { 
