@@ -15,10 +15,10 @@ const { Sequelize, Model, DataTypes } = require('sequelize');
 const database = process.env['DATABASE_NAME']
 const username = process.env['SQL_USERNAME']
 const password = process.env['SQL_PASSWORD']
-/*
+
 var sequelize = new Sequelize(database, username, password, {
     host: "localhost",
-    dialect: "mariadb",
+    dialect: "mysql",
     logging: function () {},
     pool: {
         max: 5,
@@ -31,7 +31,7 @@ var sequelize = new Sequelize(database, username, password, {
     define: {
         paranoid: true
     }
-});*/
+});
 PORT = process.env.PORT || 5000;
 
 
@@ -48,6 +48,13 @@ if (!key) { throw new Error('Set your environment variables for your subscriptio
 // Instantiate client with endpoint and key
 const computerVisionClient = new ComputerVisionClient(
     new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } }), endpoint);
+
+try {
+    sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+    } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    }
 
 function computerVision(imageUrl) {
     async.series([
