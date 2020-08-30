@@ -26,9 +26,9 @@ var sequelize = new Sequelize(database, username, password, {
         min: 0,
         idle: 10000
     },
-    dialectOptions: {
-        socketPath: "/var/run/mysqld/mysqld.sock"
-    },
+    // dialectOptions: {
+    //     socketPath: "/var/run/m  ysqld/mysqld.sock"
+    // },
     define: {
         paranoid: true
     }
@@ -65,9 +65,6 @@ function computerVision(imageUrl) {
   });
 }
 
-app.get("/", (req,res) => {
-    res.sendFile(path.resolve('../client/index.html'));
-})
 app.post("/detect_brand", (req,res) => {
     console.log(req.body.imageUrl);
     computerVision(req.body.imageUrl);
@@ -97,7 +94,7 @@ async function detectBrand(imageUrl) {
       for (const brand of brands) {
         const brandson = await sequelize.query(`SELECT * FROM SampleDatabase WHERE Short_company_name = "${brand.name}"`, { type: QueryTypes.SELECT });
         console.log(`${brand.name} (${brand.confidence.toFixed(2)} confidence)`);
-        console.log(brandson[1]['Overall_Score'] + brandson[1]['ETHIC_SCORE']); 
+        console.log(brandson[0]['Overall_Score'] + ' ' + brandson[0]['ETHIC_SCORE']);
       }
     }
     else { 
