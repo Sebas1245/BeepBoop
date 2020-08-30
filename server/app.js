@@ -15,6 +15,7 @@ const { Sequelize, Model, DataTypes } = require('sequelize');
 const database = process.env['DATABASE_NAME']
 const username = process.env['SQL_USERNAME']
 const password = process.env['SQL_PASSWORD']
+/*
 var sequelize = new Sequelize(database, username, password, {
     host: "localhost",
     dialect: "mariadb",
@@ -30,7 +31,7 @@ var sequelize = new Sequelize(database, username, password, {
     define: {
         paranoid: true
     }
-});
+});*/
 PORT = process.env.PORT || 5000;
 
 

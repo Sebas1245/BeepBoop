@@ -19,6 +19,8 @@
   "dependencies": {
     "@azure/cognitiveservices-computervision": "^7.0.1",
     "ms-rest-azure": "^3.0.0",
-    "sequelize": "^6.3.4"
+    "mysql2": "^2.1.0",
+    "sequelize": "^6.3.4",
+    "sequelize-cli": "^6.2.0"
   }
 }
