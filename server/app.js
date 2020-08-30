@@ -34,7 +34,7 @@ var sequelize = new Sequelize(database, username, password, {
 });
 PORT = process.env.PORT || 5000;
 
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 /**
@@ -76,8 +76,8 @@ app.get("/", (req,res) => {
 })
 
 app.post("/detect_brand", (req,res) => {
-    const { imageUrl } = req.body
-    computerVision(imageUrl);
+    console.log(req.body.imageUrl);
+    computerVision(req.body.imageUrl);
     res.send({msg: 'success'})
 })
 
