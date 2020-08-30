@@ -26,9 +26,9 @@ var sequelize = new Sequelize(database, username, password, {
         min: 0,
         idle: 10000
     },
-    dialectOptions: {
-        socketPath: "/var/run/mysqld/mysqld.sock"
-    },
+    // dialectOptions: {
+    //     socketPath: "/var/run/mysqld/mysqld.sock"
+    // },
     define: {
         paranoid: true
     }
@@ -76,8 +76,6 @@ app.post("/detect_brand", (req,res) => {
 
 async function detectBrand(imageUrl) {
 
-    const brands = await sequelize.query("SELECT * FROM `SampleDatabase`", { type: QueryTypes.SELECT });
-
     //Check connection with database
     try {
         await sequelize.authenticate();
@@ -85,6 +83,9 @@ async function detectBrand(imageUrl) {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
+
+    const brandson = await sequelize.query("SELECT * FROM `SampleDatabase`", { type: QueryTypes.SELECT });
+    console.log(brandson);
 
     const brandURLImage = imageUrl;
     // Analyze URL image
