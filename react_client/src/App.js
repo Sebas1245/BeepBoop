@@ -12,7 +12,11 @@ import Webcam from 'webcam-easy';
 class App extends React.Component {
   state = {
     photoUrl: '',
-    brandInfo: {},
+    brandInfo: {
+      Short_company_name: '',
+      Overall_Score: '',
+      ETHIC_SCORE:'',
+    },
   }
   webcam = {};
   handleChange = (e) => {
@@ -32,17 +36,20 @@ class App extends React.Component {
     console.log(this.state.photoUrl);
   }
   handleSubmit = (e) => {
-    e.preventDefalut()
-    const imgUrl = this.state.photoUrl
+    e.preventDefault()
+    const imageUrl = this.state.photoUrl
+    alert(imageUrl)
     axios({
       method: "POST",
       url: "http://localhost:5000/detect_brand",
-      data: {imgUrl},
+      data: {imageUrl},
 
     })
     .then(res => {
+      alert(JSON.stringify(res.data))
       if(res.data.msg === 'success'){
         //show card with brand data
+        console.log(res.data.msg);
         this.setState({
           brandInfo: res.data.info[0]
         })
@@ -107,17 +114,14 @@ class App extends React.Component {
             <Col xs={6}>
             <div id="brandInfoCard">
                 <Card>
-                  <Card.Title className="text-center mt-5">Ratings for Brand X</Card.Title>
+                  <Card.Title className="text-center mt-5">Ratings for {this.state.brandInfo.Short_company_name}</Card.Title>
                   <Card.Body>  
                     <ListGroup as="ul">
                       <ListGroup.Item as="li">
-                        <span className="font-weight-bold">Total score - </span><span className="font-weight-bold">80</span>
+                        <span className="font-weight-bold">Overall_Score - </span><span className="font-weight-bold">{this.state.brandInfo.Overall_Score}</span>
                       </ListGroup.Item>
                       <ListGroup.Item as="li">
-                        <span className="font-weight-bold">Overall score: </span> 80
-                      </ListGroup.Item>
-                      <ListGroup.Item as="li">
-                        <span className="font-weight-bold">Ethics score: </span> 8
+                        <span className="font-weight-bold">Ethics score: </span> {this.state.brandInfo.ETHIC_SCORE}
                       </ListGroup.Item>
                     </ListGroup>
                   </Card.Body>

@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const async = require('async');
+const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 const createReadStream = require('fs').createReadStream
@@ -37,6 +38,9 @@ PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors({
+    origin: "http://localhost:3000", // location of the react app we are connecting to
+}));
 
 /**
  * AUTHENTICATE
@@ -72,7 +76,7 @@ app.get("/", (req,res) => {
 app.post("/detect_brand", async (req,res) => {
     console.log(req.body.imageUrl);
     let data = await detectBrand(req.body.imageUrl);
-    res.send(data);
+    res.send({msg: 'success', info: data});
 })
 
 async function detectBrand(imageUrl) {
