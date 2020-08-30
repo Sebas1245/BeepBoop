@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
     <title>Beep Boop</title>
@@ -13,22 +13,32 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <div class="card">
+          <div class="card p-3">
             <h2 class="card-title">Calculate the ethical implications of a product</h2>
             <p class="card-body">
               <form action="/detect_brand" method="POST">
                 <label for="imageUrl">Submit a photo URL:</label>
                 <input type="text" id="imageUrl" name="imageUrl">
-                <input type="submit">
+                <input id="submitImageBtn" type="submit" class="btn btn-primary">
               </form>
             </p>
           </div>
         </div>
       </div>
     </div>
-    <video id="webcam" autoplay playsinline width="640" height="480"></video>
-    <canvas id="canvas" class="d-none"></canvas>
-    <button id="takePicture"></button>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <video id="webcam" autoplay playsinline width="540" height="480"></video>
+                <canvas id="canvas" class="d-none"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary" id="takePicture">Take a picture!</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -38,7 +48,8 @@
         const webcamElement = document.getElementById('webcam');
         const canvasElement = document.getElementById('canvas');
         const webcam = new Webcam(webcamElement, 'user', canvasElement);
-        
+        let picture = '';
+
         $(function () {
             console.log("document is ready")
             webcam.start()
@@ -49,16 +60,30 @@
                 console.log(err);
             })
         })
-        // webcam.stop()
+
+        $("#imageUrl").keyup(function(){
+            picture = this.value;
+            console.log("picture value" + picture);
+        })
+        
         $("#takePicture").on("click", function() {
-            var params = {
-                // Request parameters
-                "visualFeatures": "Brand",
-                // "details": "{string}",
-                "language": "en",
-            };
-            let picture = webcam.snap();
+            picture = webcam.snap();
             console.log(picture)
+            $("#imageUrl").val(picture);
+            // webcam.stop()
+        });
+
+        $("submitImageBtn").click(function(){
+            submitImage();
+        });
+
+        function submitImage(){
+            // var params = {
+            //     // Request parameters
+            //     "visualFeatures": "Brand",
+            //     // "details": "{string}",
+            //     "language": "en",
+            // };
             $.ajax({
                 url: "http://localhost:5000/detect_brand",
                 beforeSend: function(xhrObj){
@@ -78,6 +103,6 @@
             .fail(function() {
                 alert("error");
             });
-        }); </script>
+        }</script>
 </body>
 </html>
