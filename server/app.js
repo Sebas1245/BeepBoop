@@ -12,6 +12,7 @@ const sleep = require('util').promisify(setTimeout);
 const ComputerVisionClient = require('@azure/cognitiveservices-computervision').ComputerVisionClient;
 const ApiKeyCredentials = require('@azure/ms-rest-js').ApiKeyCredentials;
 const { Sequelize, Model, DataTypes } = require('sequelize');
+const { QueryTypes } = require('sequelize');
 const database = process.env['DATABASE_NAME']
 const username = process.env['SQL_USERNAME']
 const password = process.env['SQL_PASSWORD']
@@ -19,7 +20,7 @@ const password = process.env['SQL_PASSWORD']
 var sequelize = new Sequelize(database, username, password, {
     host: "localhost",
     dialect: "mysql",
-    logging: function () {},
+    logging: console.log,
     pool: {
         max: 5,
         min: 0,
@@ -49,13 +50,6 @@ if (!key) { throw new Error('Set your environment variables for your subscriptio
 const computerVisionClient = new ComputerVisionClient(
     new ApiKeyCredentials({ inHeader: { 'Ocp-Apim-Subscription-Key': key } }), endpoint);
 
-try {
-    sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-    } catch (error) {
-    console.error('Unable to connect to the database:', error);
-    }
-
 function computerVision(imageUrl) {
     async.series([
         async function () {
@@ -74,7 +68,6 @@ function computerVision(imageUrl) {
 app.get("/", (req,res) => {
     res.sendFile(path.resolve('../client/index.html'));
 })
-
 app.post("/detect_brand", (req,res) => {
     console.log(req.body.imageUrl);
     computerVision(req.body.imageUrl);
@@ -82,6 +75,17 @@ app.post("/detect_brand", (req,res) => {
 })
 
 async function detectBrand(imageUrl) {
+
+    const brands = await sequelize.query("SELECT * FROM `SampleDatabase`", { type: QueryTypes.SELECT });
+
+    //Check connection with database
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+
     const brandURLImage = imageUrl;
     // Analyze URL image
     console.log('Analyzing brands in image...', brandURLImage.split('/').pop());
