@@ -70,6 +70,7 @@ app.get("/", (req,res) => {
 app.post("/detect_brand", (req,res) => {
     const { imageUrl } = req.body
     computerVision(imageUrl);
+    res.send({msg: 'success'})
 })
 
 async function detectBrand(imageUrl) {
