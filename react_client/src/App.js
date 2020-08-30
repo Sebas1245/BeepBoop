@@ -38,7 +38,6 @@ class App extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const imageUrl = this.state.photoUrl
-    alert(imageUrl)
     axios({
       method: "POST",
       url: "http://localhost:5000/detect_brand",
@@ -46,7 +45,6 @@ class App extends React.Component {
 
     })
     .then(res => {
-      alert(JSON.stringify(res.data))
       if(res.data.msg === 'success'){
         //show card with brand data
         console.log(res.data.msg);
