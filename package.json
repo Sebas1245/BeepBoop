@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Sebas1245/BeepBoop#readme",
   "dependencies": {
     "@azure/cognitiveservices-computervision": "^7.0.1",
-    "ms-rest-azure": "^3.0.0"
+    "ms-rest-azure": "^3.0.0",
+    "sequelize": "^6.3.4"
   }
 }

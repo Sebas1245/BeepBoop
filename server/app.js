@@ -11,6 +11,26 @@ const createReadStream = require('fs').createReadStream
 const sleep = require('util').promisify(setTimeout);
 const ComputerVisionClient = require('@azure/cognitiveservices-computervision').ComputerVisionClient;
 const ApiKeyCredentials = require('@azure/ms-rest-js').ApiKeyCredentials;
+const { Sequelize, Model, DataTypes } = require('sequelize');
+const database = process.env['DATABASE_NAME']
+const username = process.env['SQL_USERNAME']
+const password = process.env['SQL_PASSWORD']
+var sequelize = new Sequelize(database, username, password, {
+    host: "localhost",
+    dialect: "mariadb",
+    logging: function () {},
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+    },
+    dialectOptions: {
+        socketPath: "/var/run/mysqld/mysqld.sock"
+    },
+    define: {
+        paranoid: true
+    }
+});
 PORT = process.env.PORT || 5000;
 
 
